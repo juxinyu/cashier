@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Cashier</title>
+		<link rel="stylesheet" href="./css/cashier.css">
+	</head>
+	<body>
+		<div class="container" id="wrap">
+			<div class="top">
+				<select id="ChangeLanguage" onchange="change()" key="language">
+					<option class="option" value="id">Indonesian</option>
+					<option class="option" value="en">English</option>
+				</select>
+				<img src="./img/cashier.svg" alt="" class="img-right">
+			</div>
+			<div class="center">
+				<div class="cont-box">
+					<div class="title">
+						<p class="lang" key="Total">Total Payment</p>
+						<p class="amount">IDR 10,000.00</p>
+						<div class="left-circle"></div>
+						<div class="right-circle"></div>
+					</div>
+					<div role="separator" class="n-divider n-divider--no-title n-divider--dashed"
+						style="--n-bezier:cubic-bezier(0.4, 0, 0.2, 1); --n-color:#D9D9D9; --n-text-color:rgb(31, 34, 37); --n-font-weight:600; margin: 0px;">
+						<div class="n-divider__line n-divider__line--left"></div>
+					</div>
+					<div id="time-boxs" class="time-boxs">
+						<div class="lang" key="Remaining">Remaining time</div>
+						<div id="remainTime" class="time">
+							<div id="hour" class="hours time-box"></div>
+							<div class="icon">:</div>
+							<div id="minute" class="minutes time-box"></div>
+							<div class="icon">:</div>
+							<div id="second" class="seconds time-box"></div>
+						</div>
+					</div>
+					<div class="code-box">
+						<div class="title lang" key="Code">Code</div>
+						<div class="one-code" id="one-code">
+							<div id="va-code">
+								<div class="number" id="vaCode">
+									7004 0172 0006 9570 64
+								</div>
+								<button class="button" onclick="copy()">
+									<img src="./img/copy.png" alt="" class="copy-icon">
+									<span class="lang" key="Copy">
+										Copy code
+									</span></button>
+							</div>
+							<div id="va-code-delay">
+								<div class="number lang" key="Expired" id="vaCode">
+									va code expired
+								</div>
+							</div>
+						</div>
+						<div class="two-code" id="two-code">
+							<img src="" alt="" class="qrcode" id="qrcode">
+							<div class="bank-box" id="logolist">
+							</div>
+						</div>
+					</div>
+					<div class="pay-more">
+						<div class="more-item">
+							<div class="key lang" key="Payment">Payment Method:</div>
+							<div><img src="./img/logo/bca.png" alt="" class="logo"></div>
+						</div>
+						<div class="more-item">
+							<div class="key lang" key="Order">Order Number:</div>
+							<div class="value">nmfAl6nX7hSoPj1SdqQl</div>
+						</div>
+						<div class="more-item">
+							<div class="key lang" key="Product">Product:</div>
+							<div class="value">collect</div>
+						</div>
+						<div class="more-item">
+							<div class="key lang" key="Contents">Payment contents:</div>
+							<div class="value">20230221094313972092840099566988</div>
+						</div>
+					</div>
+				</div>
+				<div class="desc-box" id="guide"></div>
+			</div>
+		</div>
+		<script>
+			document.ready = function(callback) {
+				if (document.addEventListener) {
+					document.addEventListener('DOMContentLoaded', function() {
+						document.removeEventListener('DOMContentLoaded', arguments.callee, false);
+						callback();
+					}, false)
+				} else if (document.attachEvent) {
+					document.attachEvent('onreadystatechange', function() {
+						if (document.readyState == "complete") {
+							document.detachEvent("onreadystatechange", arguments.callee);
+							callback();
+						}
+					})
+				} else if (document.lastChild == document.body) {
+					callback();
+				}
+			}
+			document.ready(function() {
+				get()
+				function get() {
+					let ajax = new XMLHttpRequest();
+					ajax.open("get", "./guide/bca.html", true);
+					ajax.send();
+					ajax.onreadystatechange = () => {
+						if (ajax.readyState === 4 && ajax.status === 200) {
+							document.getElementById('guide').innerHTML = ajax.responseText
+						}
+					}
+
+				}
+				let endtime = new Date().getTime() + 900000;
+				fresh(endtime)
+				let code = 'vacode'
+				if (code === 'vacode') {
+					document.getElementById('one-code').style.display = 'block'
+					document.getElementById('two-code').style.display = 'none'
+				} else {
+					document.getElementById('two-code').style.display = 'block'
+					document.getElementById('one-code').style.display = 'none'
+				}
+
+				let qrcodeImg = ''
+				if (qrcodeImg) {
+					document.getElementById("qrcode").src = qrcodeImg
+				}
+				let logolist = []
+				for (let i = 0; i < logolist.length; i++) {
+					let cc = new Image();
+					cc.src = logolist[i].url
+					document.getElementById("logolist").appendChild(cc);
+				}
+			})
+
+
+			function fresh(endtime) {
+				let nowtime = new Date();
+				let leftsecond = parseInt((endtime - nowtime.getTime()) / 1000);
+				h = parseInt(leftsecond / 3600);
+				m = parseInt((leftsecond / 60) % 60);
+				s = parseInt(leftsecond % 60);
+				if (h < 10) {
+					h = "0" + h;
+
+				}
+				if (m < 10 && m >= 0) {
+					m = "0" + m;
+				} else if (m < 0) {
+					m = "00";
+				}
+				if (s < 10 && s >= 0) {
+					s = "0" + s;
+				} else if (s < 0) {
+					s = "00";
+				}
+				document.getElementById('hour').innerHTML = h;
+				document.getElementById('minute').innerHTML = m;
+				document.getElementById('second').innerHTML = s;
+				let timer = setTimeout(function() {
+					fresh(endtime)
+				}, 1000)
+				if (leftsecond <= 0) {
+					document.getElementById('va-code-delay').style.display = 'block';
+					document.getElementById('va-code').style.display = 'none'
+					document.getElementById('time-boxs').style.display = 'none'
+					document.getElementById('guide').style.display = 'none'
+					clearTimeout(timer)
+				}
+			}
+			// Toast
+			function Toast(msg, duration, color) {
+				duration = isNaN(duration) ? 3000 : duration;
+				let m = document.createElement('div');
+				m.innerHTML = msg;
+				m.style.cssText =
+					"width:30%; min-width:150px;opacity:.6; height:30px; color:#fff; line-height:30px; text-align:center; border-radius:5px; position:fixed; top:3%; left:35%; z-index:999999; font-size:14px;font-weight:300;background:" +
+					color;
+				document.body.appendChild(m);
+				setTimeout(function() {
+					let d = 0.5;
+					m.style.webkitTransition = '-webkit-transform ' + d + 's ease-in, opacity ' + d +
+						's ease-in';
+					m.style.opacity = '0';
+					setTimeout(function() {
+						document.body.removeChild(m)
+					}, d * 1000);
+				}, duration);
+			}
+
+			// 复制
+			function copy() {
+				let code = document.getElementById("vaCode").innerText;
+				let oInput = document.createElement('input');
+				oInput.value = code;
+				document.body.appendChild(oInput);
+				oInput.select(); // 选择对象
+				document.execCommand("Copy"); // 执行浏览器复制命令
+				oInput.className = 'oInput';
+				oInput.style.display = 'none';
+				Toast('Copy success', 1000, '#67C23A');
+			}
+			// 折叠菜单
+			function fold(number) {
+				let content = document.getElementById('n-collapse-item-content' + number)
+				let right = document.getElementById('right-arrow' + number)
+				right.style.transform = right.style.transform === 'rotate(90deg)' ? "rotate(0deg)" : "rotate(90deg)"
+				if (number === 3) {
+					content.style.height = content.offsetHeight === 240 ? 0 + 'px' : 240 + 'px'
+				} else {
+					content.style.height = content.offsetHeight === 172 ? 0 + 'px' : 172 + 'px'
+				}
+			}
+		</script>
+		<script src="js/language.js"></script>
+	</body>
+</html>
