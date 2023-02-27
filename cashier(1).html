@@ -5,7 +5,270 @@
 			content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>Cashier</title>
-		<link rel="stylesheet" href="/assets/css/cashier.css">
+		<style>
+			* {
+				padding: 0%;
+				margin: 0%;
+			}
+			body {
+				width: 100%;
+				height: 100%;
+				background-color: #f5f8fa;
+			}
+			#wrap {
+				max-width: 748px;
+				margin: 0 auto;
+			}
+			.top {
+				margin: 10px auto 0;
+				padding: 0px 10px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+			#ChangeLanguage {
+				border: none;
+				background-color: #f5f8fa;
+				width: 90px;
+				height: 40px;
+				box-sizing: border-box;
+				outline: none;
+				-webkit-tap-highlight-color: transparent;
+			}
+			.center {
+				height: 100%;
+				min-height: 100vh;
+				margin: 0 auto;
+				padding: 10px;
+			}
+			.cont-box {
+				background-color: #fff;
+				border-radius: 10px;
+				margin-bottom: 10px;
+				padding: 15px;
+			}
+			.title {
+				font-size: 14px;
+				font-weight: 500;
+				color: #999;
+				position: relative;
+			}
+			.amount {
+				font-size: 24px;
+				line-height: 45px;
+				color: #333;
+			}
+			.left-circle {
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				position: absolute;
+				bottom: -10px;
+				left: -25px;
+				background-color: #f5f8fa;
+			}
+			.right-circle {
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				position: absolute;
+				bottom: -10px;
+				right: -25px;
+				background-color: #f5f8fa;
+			}
+			.n-divider {
+				position: relative;
+				display: flex;
+				width: 100%;
+				box-sizing: border-box;
+				font-size: 16px;
+				color: var(--n-text-color);
+				transition: color 0.3s var(--n-bezier),
+				background-color 0.3s var(--n-bezier);
+			}
+			.n-divider.n-divider--dashed .n-divider__line {
+				border-color: #d9d9d9;
+			}
+			.n-divider.n-divider--dashed .n-divider__line {
+				background-color: #0000;
+				height: 0px;
+				width: 100%;
+				border-style: dashed;
+				border-width: 1px 0 0;
+			}
+			.time-boxs {
+				height: 100px;
+				background-color: #f5f8fa;
+				font-size: 18px;
+				font-weight: 600;
+				border-radius: 10px;
+				padding: 15px;
+				margin-top: 14px;
+				color: #333;
+				text-align: center;
+				display: block;
+			}
+			.time {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-top: 16px;
+			}
+			.time-box {
+				width: 50px;
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				color: #fff;
+				font-size: 24px;
+				font-weight: bold;
+				font-family: effrafonabold;
+				border-radius: 4px;
+				background-image: -webkit-gradient(
+					linear,
+					left top,
+					left bottom,
+					from(#797979),
+					to(#444)
+				);
+				background-image: linear-gradient(to bottom, #797979, #444);
+			}
+			.icon {
+				width: 26px;
+				color: #444;
+				background-image: none;
+			}
+			.code-box {
+				background: #f5f8fa;
+				border-radius: 6px;
+				margin-top: 25px;
+				display: flex;
+				flex-flow: column;
+				align-items: center;
+				justify-content: center;
+				position: relative;
+				padding: 32px 0 20px;
+			}
+			.code-box .title {
+				border: 1px solid #eee;
+				border-radius: 12px;
+				padding: 5px 30px;
+				background-color: #fff;
+				position: absolute;
+				top: -15px;
+			}
+			.code-box .number {
+				width: 100%;
+				text-align: center;
+				font-size: 24px;
+				font-weight: 700;
+				color: #000;
+				margin-bottom: 20px;
+			}
+			.code-box .button {
+				width: initial;
+				height: 30px;
+				font-size: 14px;
+				padding: 0px 10px;
+				border-radius: 3px;
+				background-color: #2a85ff;
+				color: #fff;
+				border: none;
+				white-space: nowrap;
+				text-align: center;
+				cursor: pointer;
+			}
+			.qrcode {
+				width: 200px;
+			}
+			.two-code {
+				display: flex;
+				flex-flow: column;
+				align-items: center;
+			}
+			.bank-box {
+				display: flex;
+				flex-flow: row wrap;
+				justify-content: center;
+				margin: 10px 0;
+			}
+			.bank-box img {
+				height: 30px;
+				margin: 0 5px;
+			}
+			.code-box #va-code {
+				text-align: center;
+				display: block;
+			}
+			.code-box #va-code-delay {
+				text-align: center;
+				display: none;
+			}
+			.code-box .copy-icon {
+				width: 18px;
+				height: 18px;
+				margin: 6px 6px 6px 0;
+				font-size: 14px;
+				vertical-align: middle;
+			}
+			.pay-more {
+				margin-top: 20px;
+				color: #999;
+			}
+			.pay-more .more-item {
+				display: flex;
+				justify-content: space-between;
+				margin-bottom: 15px;
+			}
+			.pay-more .key {
+				width: 50%;
+			}
+			.pay-more .value {
+				width: 50%;
+				word-wrap: break-word;
+			}
+			.pay-more .logo {
+				height: 18px;
+				margin-left: 5px;
+			}
+			.desc-box {
+				background-color: #fff;
+				padding: 15px;
+				font-size: 14px;
+				color: rgb(31, 34, 37);
+			}
+			.n-collapse {
+				padding: 15px 0;
+				border-bottom: 1px solid rgb(239, 239, 245);
+			}
+			.n-collapse-item {
+				cursor: pointer;
+				display: flex;
+				flex-wrap: nowrap;
+				font-weight: 400;
+				align-items: center;
+			}
+			.right-arrow {
+				width: 24px;
+				height: 24px;
+				vertical-align: middle;
+				transition: transform 0.2s linear;
+			}
+			.n-collapse-item-content {
+				height: 0;
+				overflow: hidden;
+				transition: height 0.2s linear;
+			}
+			.n-collapse-item-content .first {
+				margin-top: 15.5px;
+			}
+			.desc-box .info {
+				color: #666;
+				padding: 0 15px;
+				font-size: 14px;
+				line-height: 22.5px;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="container" id="wrap">
@@ -40,16 +303,14 @@
 					</div>
 					<div class="code-box">
 						<div class="title lang" key="Code">Code</div>
-						<div class="two-code" id="two-code">
-							<img src="{{.qr}}" alt="" class="qrcode" id="qrcode">
+						<div class="two-code" id="two-code"  style="display: none">
+							<img src="" alt="" class="qrcode" id="qrcode">
 							<div class="bank-box" id="logolist">
 							</div>
 						</div>
-						<div class="one-code" id="one-code">
+						<div class="one-code" id="one-code"  style="display: none">
 							<div id="va-code">
-								<div class="number" id="vaCode">
-									{{.code}}
-								</div>
+								<div class="number" id="vaCode"></div>
 								<button class="button" onclick="copy()">
 									<img src="/assets/image/copy.png" alt="" class="copy-icon">
 									<span class="lang" key="Copy">
@@ -106,42 +367,43 @@
 			}
 
 			document.ready(function() {
-				get()
-				function get() {
-					let ajax = new XMLHttpRequest();
-					if ({{.channel_type}} === 'enpty'){
-						document.getElementById('guide').style.display = 'none'
-					}
-					ajax.open("get", "./guide/{{.channel_type}}.html", true);
-					ajax.send();
-					ajax.onreadystatechange = () => {
-						if (ajax.readyState === 4 && ajax.status === 200) {
-							document.getElementById('guide').innerHTML = ajax.responseText
-						}
-					}
-
-				}
+				get('{{.channel_type}}')
+				
 				let endtime = new Date().getTime() + {{.close_time}};
 				fresh(endtime)
 
-				document.getElementById('one-code').style.display = 'none'
-				document.getElementById('two-code').style.display = 'none'
-				if ({{.code}}.length>0) {
-					console.log(1111111)
+				let code = '{{.code}}'
+				let qr = '{{.qr}}'
+				if (code.length>0) {
+					document.getElementById('vaCode').innerHTML = code
 					document.getElementById('one-code').style.display = 'block'
 				}
-				if({{.qr}}.length>0){
-					console.log(2222222)
+				if(qr.length>0){
+					document.getElementById('qrcode').src = qr
 					document.getElementById('two-code').style.display = 'block'
-				}
+				}	
 
-				let logolist = [{{.logo_list}}]
+				let logolist = {{.logo_list}}.split(',')
 				for (let i = 0; i < logolist.length; i++) {
 					let cc = new Image();
 					cc.src = '/assets/image/logo/'+logolist[i]+'.png'
 					document.getElementById("logolist").appendChild(cc);
 				}
 			})
+			function get() {
+				let ajax = new XMLHttpRequest();
+				if ({{.channel_type}} === 'empty'){
+					document.getElementById('guide').style.display = 'none'
+				}
+				ajax.open("get", "./guide/{{.channel_type}}.html", true);
+				ajax.send();
+				ajax.onreadystatechange = () => {
+					if (ajax.readyState === 4 && ajax.status === 200) {
+						document.getElementById('guide').innerHTML = ajax.responseText
+					}
+				}
+
+			}
 
 			function fresh(endtime) {
 				let nowtime = new Date();
