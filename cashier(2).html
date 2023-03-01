@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Cashier</title>
+		<style>
+			* {
+				padding: 0%;
+				margin: 0%;
+			}
+
+			body {
+				width: 100%;
+				height: 100%;
+				background-color: #f5f8fa;
+			}
+
+			#wrap {
+				max-width: 748px;
+				margin: 0 auto;
+			}
+
+			.top {
+				margin: 10px auto 0;
+				padding: 0px 10px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+
+			#ChangeLanguage {
+				border: none;
+				background-color: #f5f8fa;
+				width: 90px;
+				height: 40px;
+				box-sizing: border-box;
+				outline: none;
+				-webkit-tap-highlight-color: transparent;
+			}
+
+			.center {
+				height: 100%;
+				min-height: 100vh;
+				margin: 0 auto;
+				padding: 10px;
+			}
+
+			.cont-box {
+				background-color: #fff;
+				border-radius: 10px;
+				margin-bottom: 10px;
+				padding: 15px;
+			}
+
+			.title {
+				font-size: 14px;
+				font-weight: 500;
+				color: #999;
+				position: relative;
+			}
+
+			.amount {
+				font-size: 24px;
+				line-height: 45px;
+				color: #333;
+			}
+
+			.left-circle {
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				position: absolute;
+				bottom: -10px;
+				left: -25px;
+				background-color: #f5f8fa;
+			}
+
+			.right-circle {
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				position: absolute;
+				bottom: -10px;
+				right: -25px;
+				background-color: #f5f8fa;
+			}
+
+			.n-divider {
+				position: relative;
+				display: flex;
+				width: 100%;
+				box-sizing: border-box;
+				font-size: 16px;
+				color: var(--n-text-color);
+				transition: color 0.3s var(--n-bezier),
+					background-color 0.3s var(--n-bezier);
+			}
+
+			.n-divider.n-divider--dashed .n-divider__line {
+				border-color: #d9d9d9;
+			}
+
+			.n-divider.n-divider--dashed .n-divider__line {
+				background-color: #0000;
+				height: 0px;
+				width: 100%;
+				border-style: dashed;
+				border-width: 1px 0 0;
+			}
+
+			.time-boxs {
+				height: 100px;
+				background-color: #f5f8fa;
+				font-size: 18px;
+				font-weight: 600;
+				border-radius: 10px;
+				padding: 15px;
+				margin-top: 14px;
+				color: #333;
+				text-align: center;
+				display: block;
+			}
+
+			.time {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-top: 16px;
+			}
+
+			.time-box {
+				width: 50px;
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				color: #fff;
+				font-size: 24px;
+				font-weight: bold;
+				font-family: effrafonabold;
+				border-radius: 4px;
+				background-image: -webkit-gradient(linear,
+						left top,
+						left bottom,
+						from(#797979),
+						to(#444));
+				background-image: linear-gradient(to bottom, #797979, #444);
+			}
+
+			.icon {
+				width: 26px;
+				color: #444;
+				background-image: none;
+			}
+
+			.code-box {
+				background: #f5f8fa;
+				border-radius: 6px;
+				margin-top: 25px;
+				display: flex;
+				flex-flow: column;
+				align-items: center;
+				justify-content: center;
+				position: relative;
+				padding: 32px 0 20px;
+			}
+
+			.code-box .title {
+				border: 1px solid #eee;
+				border-radius: 12px;
+				padding: 5px 30px;
+				background-color: #fff;
+				position: absolute;
+				top: -15px;
+			}
+
+			.code-box .number {
+				width: 100%;
+				text-align: center;
+				font-size: 24px;
+				font-weight: 700;
+				color: #000;
+				margin-bottom: 20px;
+			}
+
+			.code-box .button {
+				width: initial;
+				height: 30px;
+				font-size: 14px;
+				padding: 0px 10px;
+				border-radius: 3px;
+				background-color: #2a85ff;
+				color: #fff;
+				border: none;
+				white-space: nowrap;
+				text-align: center;
+				cursor: pointer;
+			}
+
+			.qrcode {
+				width: 200px;
+			}
+
+			.two-code {
+				display: flex;
+				flex-flow: column;
+				align-items: center;
+			}
+
+			.bank-box {
+				display: flex;
+				flex-flow: row wrap;
+				justify-content: center;
+				margin: 10px 0;
+			}
+
+			.bank-box img {
+				height: 30px;
+				margin: 0 5px;
+			}
+
+			.code-box #va-code {
+				text-align: center;
+				display: block;
+			}
+
+			.code-box #va-code-delay {
+				text-align: center;
+				display: none;
+			}
+
+			.code-box .copy-icon {
+				width: 18px;
+				height: 18px;
+				margin: 6px 6px 6px 0;
+				font-size: 14px;
+				vertical-align: middle;
+			}
+
+			.pay-more {
+				margin-top: 20px;
+				color: #999;
+			}
+
+			.pay-more .more-item {
+				display: flex;
+				justify-content: space-between;
+				margin-bottom: 15px;
+			}
+
+			.pay-more .key {
+				width: 50%;
+			}
+
+			.pay-more .value {
+				width: 50%;
+				word-wrap: break-word;
+			}
+
+			.pay-more .logo {
+				height: 18px;
+				margin-left: 5px;
+			}
+
+			.desc-box {
+				background-color: #fff;
+				padding: 15px;
+				font-size: 14px;
+				color: rgb(31, 34, 37);
+			}
+
+			.n-collapse {
+				padding: 15px 0;
+				border-bottom: 1px solid rgb(239, 239, 245);
+			}
+
+			.n-collapse-item {
+				cursor: pointer;
+				display: flex;
+				flex-wrap: nowrap;
+				font-weight: 400;
+				align-items: center;
+			}
+
+			.right-arrow {
+				width: 24px;
+				height: 24px;
+				vertical-align: middle;
+				transition: transform 0.2s linear;
+			}
+
+			.n-collapse-item-content {
+				height: 0;
+				overflow: hidden;
+				transition: height 0.2s linear;
+			}
+
+			.n-collapse-item-content .first {
+				margin-top: 15.5px;
+			}
+
+			.desc-box .info {
+				color: #666;
+				padding: 0 15px;
+				font-size: 14px;
+				line-height: 22.5px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container" id="wrap">
+			<div class="top">
+				<select id="ChangeLanguage" onchange="change()" key="language">
+					<option class="option" value="id">Indonesian</option>
+					<option class="option" value="en">English</option>
+				</select>
+				<img src="/assets/image/cashier.svg" alt="" class="img-right" />
+			</div>
+			<div class="center">
+				<div class="cont-box">
+					<div class="title">
+						<p class="lang" key="Total">Total Payment</p>
+						<p class="amount">{{.currency}} {{.amount}}</p>
+						<div class="left-circle"></div>
+						<div class="right-circle"></div>
+					</div>
+					<div role="separator" class="n-divider n-divider--no-title n-divider--dashed" style="
+              --n-bezier: cubic-bezier(0.4, 0, 0.2, 1);
+              --n-color: #d9d9d9;
+              --n-text-color: rgb(31, 34, 37);
+              --n-font-weight: 600;
+              margin: 0px;
+            ">
+						<div class="n-divider__line n-divider__line--left"></div>
+					</div>
+					<div id="time-boxs" class="time-boxs">
+						<div class="lang" key="Remaining">Remaining time</div>
+						<div id="remainTime" class="time">
+							<div id="hour" class="hours time-box"></div>
+							<div class="icon">:</div>
+							<div id="minute" class="minutes time-box"></div>
+							<div class="icon">:</div>
+							<div id="second" class="seconds time-box"></div>
+						</div>
+					</div>
+					<div class="code-box">
+						<div class="title lang" key="Code">Code</div>
+						<div class="two-code" id="two-code" style="display: none">
+							<img src="" alt="" class="qrcode" id="qrcode" />
+							<div class="bank-box" id="logolist"></div>
+						</div>
+						<div class="one-code" id="one-code" style="display: none">
+							<div id="va-code">
+								<div class="number" id="vaCode"></div>
+								<button class="button" onclick="copy()">
+									<img src="/assets/image/copy.png" alt="" class="copy-icon" />
+									<span class="lang" key="Copy"> Copy code </span>
+								</button>
+							</div>
+							<div id="va-code-delay">
+								<div class="number lang" key="Expired" id="vaCode">
+									va code expired
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="pay-more">
+						<div class="more-item">
+							<div class="key lang" key="Payment">Payment Method:</div>
+							<div>
+								<img id="logo-img" src="/assets/image/logo/{{.channel_type}}.png" alt="" class="logo" />
+							</div>
+						</div>
+						<div class="more-item">
+							<div class="key lang" key="Order">Order Number:</div>
+							<div class="value">{{.order_no}}</div>
+						</div>
+						<div class="more-item">
+							<div class="key lang" key="Product">Product:</div>
+							<div class="value">{{.order_type}}</div>
+						</div>
+						<div class="more-item">
+							<div class="key lang" key="Contents">Payment contents:</div>
+							<div class="value">{{.mcht_order_no}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="desc-box" id="guide"></div>
+			</div>
+		</div>
+		<script>
+			document.ready = function(callback) {
+				if (document.addEventListener) {
+					document.addEventListener('DOMContentLoaded', function() {
+						document.removeEventListener('DOMContentLoaded', arguments.callee, false);
+						callback();
+					}, false);
+				} else if (document.attachEvent) {
+					document.attachEvent('onreadystatechange', function() {
+						if (document.readyState == "complete") {
+							document.detachEvent("onreadystatechange", arguments.callee);
+							callback();
+						}
+					});
+				} else if (document.lastChild == document.body) {
+					callback();
+				}
+			};
+
+			document.ready(function() {
+				get('{{.channel_type}}');
+
+				let endtime = new Date().getTime() + {
+					{
+						.close_time
+					}
+				};
+				fresh(endtime);
+
+				let code = '{{.code}}';
+				let qr = '{{.qr}}';
+				if (code.length > 0) {
+					document.getElementById('vaCode').innerHTML = code;
+					document.getElementById('one-code').style.display = 'block';
+				};
+				if (qr.length > 0) {
+					document.getElementById('qrcode').src = qr;
+					document.getElementById('two-code').style.display = 'block';
+				};
+
+				let logolist = {
+					{
+						.logo_list
+					}
+				}.split(',');
+				for (let i = 0; i < logolist.length; i++) {
+					let cc = new Image();
+					cc.src = '/assets/image/logo/' + logolist[i] + '.png';
+					document.getElementById("logolist").appendChild(cc);
+				};
+			});
+
+			function get(ct) {
+				let ajax = new XMLHttpRequest();
+				if (ct === 'empty') {
+					document.getElementById('guide').style.display = 'none'
+				};
+				ajax.open("get", "/assets/guide/" + ct + ".html", true);
+				ajax.send();
+				ajax.onreadystatechange = () => {
+					if (ajax.readyState === 4 && ajax.status === 200) {
+						document.getElementById('guide').innerHTML = ajax.responseText
+					};
+				};
+			};
+
+			function fresh(endtime) {
+				let nowtime = new Date();
+				let leftsecond = parseInt((endtime - nowtime.getTime()) / 1000);
+				h = parseInt(leftsecond / 3600);
+				m = parseInt((leftsecond / 60) % 60);
+				s = parseInt(leftsecond % 60);
+				if (h < 10) {
+					h = "0" + h
+				};
+				if (m < 10 && m >= 0) {
+					m = "0" + m
+				} else if (m < 0) {
+					m = "00"
+				};
+				if (s < 10 && s >= 0) {
+					s = "0" + s
+				} else if (s < 0) {
+					s = "00"
+				};
+				document.getElementById('hour').innerHTML = h;
+				document.getElementById('minute').innerHTML = m;
+				document.getElementById('second').innerHTML = s;
+				let timer = setTimeout(function() {
+					fresh(endtime);
+				}, 1000);
+				if (leftsecond <= 0) {
+					document.getElementById('va-code-delay').style.display = 'block';
+					document.getElementById('va-code').style.display = 'none';
+					document.getElementById('time-boxs').style.display = 'none';
+					document.getElementById('guide').style.display = 'none';
+					clearTimeout(timer);
+				};
+			};
+
+			// Toast
+			function Toast(msg, duration, color) {
+				duration = isNaN(duration) ? 3000 : duration;
+				let m = document.createElement('div');
+				m.innerHTML = msg;
+				m.style.cssText =
+					"width:30%; min-width:150px;opacity:.6; height:30px; color:#fff; line-height:30px; text-align:center; border-radius:5px; position:fixed; top:3%; left:35%; z-index:999999; font-size:14px;font-weight:300;background:" +
+					color;
+				document.body.appendChild(m);
+				setTimeout(function() {
+					let d = 0.5;
+					m.style.webkitTransition = '-webkit-transform ' + d + 's ease-in, opacity ' + d +
+						's ease-in';
+					m.style.opacity = '0';
+					setTimeout(function() {
+						document.body.removeChild(m)
+					}, d * 1000);
+				}, duration);
+			};
+
+			// 复制
+			function copy() {
+				let code = document.getElementById("vaCode").innerText;
+				let oInput = document.createElement('input');
+				oInput.value = code;
+				document.body.appendChild(oInput);
+				oInput.select(); // 选择对象
+				document.execCommand("Copy"); // 执行浏览器复制命令
+				oInput.className = 'oInput';
+				oInput.style.display = 'none';
+				Toast('Copy success', 1000, '#67C23A');
+			};
+			// 折叠菜单
+			function fold(number) {
+				let content = document.getElementById('n-collapse-item-content' + number);
+				let right = document.getElementById('right-arrow' + number);
+				right.style.transform = right.style.transform === 'rotate(90deg)' ? "rotate(0deg)" : "rotate(90deg)";
+				if (number === 3) {
+					content.style.height = content.offsetHeight === 240 ? 0 + 'px' : 240 + 'px'
+				} else {
+					content.style.height = content.offsetHeight === 172 ? 0 + 'px' : 172 + 'px'
+				};
+			};
+		</script>
+		<script src="/assets/js/language.js"></script>
+	</body>
+</html>
